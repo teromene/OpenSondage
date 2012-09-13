@@ -50,29 +50,30 @@ const ADRESSEMAILADMIN = '<adresse mail>';
 const ADRESSEMAILREPONSEAUTO = '<no-reply@framasoft.org>';
 
 // nom de la base de donnees
-const BASE = '<nom de la base de données>';
+
+const BASE = 'sondage';
 
 // nom de l'utilisateur de la base
-const USERBASE = "<nom de l'utilisateur>";
+const USERBASE = "sondage";
 
 // passwd de l'utilisateur de la base
 const USERPASSWD = '<mot de passe>';
 
 // nom du serveur de base de donnees, laisser vide pour utiliser un socket
-const SERVEURBASE = '<nom du serveur avec domaine>';
+const SERVEURBASE = '';
 
 // Type de base de données à utiliser (mysql, postgres, ...)
 // http://phplens.com/lens/adodb/docs-adodb.htm#drivers
-const BASE_TYPE = '<type de BDD>';
+const BASE_TYPE = 'mysql';
 
 // Langue par défaut de l'application (à choisir dans $ALLOWED_LANGUAGES)
 const LANGUE = 'fr_FR';
 
 // Nom et emplacement du logo
-const LOGOBANDEAU = '<chemin relatif suivi du nom du fichier du logo pour le bandeau>';
+//const LOGOBANDEAU = '<chemin relatif suivi du nom du fichier du logo pour le bandeau>';
 
 // Nom et emplacement du logo de la lettre générée en PDF
-const LOGOLETTRE = '<chemin relatif suivi du nom du fichier du logo pour la lettre>';
+//const LOGOLETTRE = '<chemin relatif suivi du nom du fichier du logo pour la lettre>';
 
 // Nom et emplacement du fichier image contenant le titre
 //const IMAGE_TITRE', '<chemin relatif suivi du nom du fichier image du titre>';

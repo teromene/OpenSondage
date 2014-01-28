@@ -120,6 +120,10 @@ function print_header($js = false, $nom_sondage = '')
     <link rel="stylesheet" type="text/css" href="/style.css">
     <link rel="stylesheet" type="text/css" href="/print.css" media="print">';
 
+  if ($js) {
+    echo '<script type="text/javascript" src="block_enter.js"></script>';
+  }
+
   echo '</head>';
 }
 

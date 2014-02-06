@@ -72,7 +72,7 @@ function gAnalytics() {
 function logo ()
 {
   if(defined('LOGOBANDEAU')) {
-    echo '<div class="logo"><img src="/' . LOGOBANDEAU . '" height="74" alt="logo"></div>'."\n";
+    echo '<div class="logo"><img src="' . LOGOBANDEAU . '" height="74" alt="logo"></div>'."\n";
   }
 }
 
@@ -82,7 +82,7 @@ function bandeau_tete()
 {
   if ( IMAGE_TITRE ) {
 
-    echo '<div class="bandeau"><a href="/" title="Accueil '.NOMAPPLICATION.'"><img src="/' . IMAGE_TITRE. '" title="Accueil '.NOMAPPLICATION.'" alt="'.NOMAPPLICATION.'"></a></div>'."\n";
+    echo '<div class="bandeau"><a href="/" title="Accueil '.NOMAPPLICATION.'"><img src="' . IMAGE_TITRE. '" title="Accueil '.NOMAPPLICATION.'" alt="'.NOMAPPLICATION.'"></a></div>'."\n";
 
   } else {
 

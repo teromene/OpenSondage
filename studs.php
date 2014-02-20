@@ -651,7 +651,7 @@ echo _("Name") .' : ';
 echo '<input type="text" name="commentuser" maxlength="64" value="'.$nom.'" /><br>'."\n";
 
 echo '<textarea name="comment" rows="2" cols="40"></textarea>'."\n";
-echo '<input type="button" name="ajoutcomment" value="Ajouter un commentaire" class="btn btn-success" alt="Valider"><br>'."\n";
+echo '<input type="submit" name="ajoutcomment" value="Ajouter un commentaire" class="btn btn-success" alt="Valider"><br>'."\n";
 echo '</form>'."\n";
 // Focus javascript sur la case de texte du formulaire
 echo '<script type="text/javascript">'."\n" . 'document.formulaire.commentuser.focus();'."\n" . '</script>'."\n";

@@ -130,6 +130,7 @@ $sql = $connect->Prepare($sql);
 $user_studs = $connect->Execute($sql, array($numsondage));
 
 $nbcolonnes = substr_count($dsondage->sujet, ',') + 1;
+
 if (!is_error(NO_POLL) && (isset($_POST["boutonp"]) || isset($_POST["boutonp_x"]))) {
   //Si le nom est bien entré
   if (issetAndNoEmpty('nom') === false) {
@@ -142,10 +143,16 @@ if (!is_error(NO_POLL) && (isset($_POST["boutonp"]) || isset($_POST["boutonp_x"]
       // Si la checkbox est enclenchée alors la valeur est 1
       if (isset($_POST["choix$i"]) && $_POST["choix$i"] == '1') {
         $nouveauchoix.="1";
-      } else { // sinon c'est 0
+      } else if(isset($_POST["choix$i"]) && $_POST["choix$i"] == '2') {
+        $nouveauchoix.="2";
+      }else 
+      { // sinon c'est 0
         $nouveauchoix.="0";
+
       }
+      
     }
+    
     
     $nom=substr($_POST["nom"],0,64);
     
@@ -191,6 +198,8 @@ logo();
 bandeau_tete();
 bandeau_titre(_("Make your polls"));
 sous_bandeau();
+
+
 #print_r($_SESSION);
 if($err != 0) {
   bandeau_titre(_("Error!"));
@@ -293,6 +302,7 @@ if ($testmodifier) {
       $nouveauchoix.="1";
     } else {
       $nouveauchoix.="0";
+      echo $_POST["choix$i"];
     }
   }
   
@@ -324,7 +334,7 @@ $toutsujet = explode(",",$dsondage->sujet);
 //sort($toutsujet, SORT_NUMERIC);
 
 //si le sondage est un sondage de date
-if ($dsondage->format=="D"||$dsondage->format=="D+") {
+if ($dsondage->format=="D"||$dsondage->format=="D+"||$dsondage->format=="D2" ||$dsondage->format=="D3") {
   //affichage des sujets du sondage
   echo '<tr>'."\n";
   echo '<td></td>'."\n";
@@ -452,7 +462,7 @@ while ($data = $user_studs->FetchNextObject(false)) {
   // pour chaque colonne
   for ($k=0; $k < $nbcolonnes; $k++) {
     // on remplace les choix de l'utilisateur par une ligne de checkbox pour recuperer de nouvelles valeurs
-    if ($compteur == $ligneamodifier) {
+    if ($compteur == $ligneamodifier && $dsondage->format !="D2" && $dsondage->format !="D3") {
       echo '<td class="vide"><input type="checkbox" name="choix'.$k.'" value="1" ';
       if(substr($ensemblereponses,$k,1) == '1') {
         echo 'checked="checked"';
@@ -464,9 +474,17 @@ while ($data = $user_studs->FetchNextObject(false)) {
       if ($car == "1") {
         echo '<td class="ok">OK</td>'."\n";
         if (isset($somme[$k]) === false) {
-	  $somme[$k] = 0;
-	}
+	  		$somme[$k] = 0;
+		}
+
         $somme[$k]++;
+      } else if($car == "2") {
+      
+       echo '<td class="ok2">(OK)</td>'."\n";
+      	if (isset($somme2[$k]) === false) {
+	  		$somme2[$k] = 0;
+		}
+		$somme2[$k]++;
       } else {
         echo '<td class="non"></td>'."\n";
       }
@@ -506,7 +524,18 @@ if (! ( USE_REMOTE_USER && isset($_SERVER['REMOTE_USER']) ) || !$user_mod) {
   
   // affichage des cases de formulaire checkbox pour un nouveau choix
   for ($i=0;$i<$nbcolonnes;$i++) {
-    echo '<td class="vide"><input type="checkbox" name="choix'.$i.'" value="1"';
+    if($dsondage->format!="D2"&& $dsondage->format !="D3") {
+    	echo '<td class="vide"><input type="checkbox" name="choix'.$i.'" value="1"';
+    } else {
+    
+    	echo "<td class='vide'><input type='radio' id='D2oui".$i."' value='1' class='D2Check' name='choix".$i."'>
+<label for='D2oui".$i."' class='D2Label'>Oui</label><br>
+<input type='radio' id='D2oui2".$i."' value='2' name='choix".$i."' class='D2Check'>
+<label for='D2oui2".$i."' class='D2Label'>(Oui)</label><br>
+<input type='radio' id='D2non".$i."' value='0' name='choix".$i."' class='D2Check' checked>
+<label for='D2non".$i."' class='D2Label'>Non</label";
+    
+    }
     if ( isset($_POST['choix'.$i]) && $_POST['choix'.$i] == '1' && is_error(NAME_EMPTY) ) {
       echo ' checked="checked"';
     }
@@ -541,7 +570,6 @@ echo '<td align="right">';
 // si on a plus de 8 colonnes, on affiche un second bouton "valider mes choix"
 echo ($nbcolonnes>8) ?'<input type="submit" name="boutonp" value="Valider mes choix" class="btn btn-success btn-mini" style="margin-right:50px">' : "";
 echo   _("Addition") .'</td>'."\n";
-
 for ($i=0; $i < $nbcolonnes; $i++) {
   if (isset($somme[$i]) === true) {
     $affichesomme = $somme[$i];
@@ -552,13 +580,32 @@ for ($i=0; $i < $nbcolonnes; $i++) {
   } else {
     $affichesomme = '0';
   }
-  
-  echo '<td class="somme">'.$affichesomme.'</td>'."\n";
+    echo '<td class="somme">'.$affichesomme.'</td>'."\n";
+    
 }
 
 echo '</tr>'."\n";
 echo '<tr>'."\n";
 echo '<td class="somme"></td>'."\n";
+for ($i=0; $i < $nbcolonnes; $i++) {
+  if($dsondage->format=="D2" || $dsondage->format =="D3") {
+  	if (isset($somme2[$i]) === true) {
+   	 $affichesomme = $somme2[$i];
+    
+  	  if ($affichesomme == "") {
+   	   $affichesomme = '0';
+  	  }
+ 	 } else {
+	    $affichesomme = '0';
+ 	 }
+ 	   echo '<td class="somme2">'.$affichesomme.'</td>'."\n";
+   } 
+}
+if($dsondage->format=="D2" || $dsondage->format =="D3") {
+	echo '</tr>'."\n";
+	echo '<tr>'."\n";
+	echo '<td class="somme"></td>'."\n";
+}
 
 for ($i=0; $i < $nbcolonnes; $i++) {
   if (isset($somme[$i]) && isset($meilleurecolonne) && $somme[$i] == $meilleurecolonne) {
@@ -585,7 +632,7 @@ $meilleursujet = '';
 for ($i = 0; $i < $nbcolonnes; $i++) {
   if (isset($somme[$i]) && isset($meilleurecolonne) && $somme[$i] == $meilleurecolonne) {
     $meilleursujet.=", ";
-    if ($dsondage->format=="D"||$dsondage->format=="D+") {
+    if ($dsondage->format=="D"||$dsondage->format=="D+" || $dsondage->format=="D2" || $dsondage->format =="D3") {
       $meilleursujetexport = $toutsujet[$i];
       if (strpos($toutsujet[$i],'@') !== false) {
         $toutsujetdate=explode("@",$toutsujet[$i]);

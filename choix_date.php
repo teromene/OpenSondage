@@ -203,7 +203,10 @@ if (!issetAndNoEmpty('nom', $_SESSION) && !issetAndNoEmpty('adresse', $_SESSION)
   $premierjourmois = date("N", mktime(0, 0, 0, $_SESSION["mois"], 1, $_SESSION["annee"])) - 1;
   
   //le format du sondage est DATE
-  $_SESSION["formatsondage"] = "D".$_SESSION["studsplus"];
+  if($_SESSION["studsplus"] && $_SESSION["other"])$_SESSION["formatsondage"] = "D3";
+  if(!$_SESSION["studsplus"] && $_SESSION["other"])$_SESSION["formatsondage"] = "D2";
+  if($_SESSION["studsplus"] && !$_SESSION["other"])$_SESSION["formatsondage"] = "D+";
+  if(!$_SESSION["studsplus"] && !$_SESSION["other"])$_SESSION["formatsondage"] = "D";
   
   //traduction de la valeur du mois
   if (is_integer($_SESSION["mois"]) && $_SESSION["mois"] > 0 && $_SESSION["mois"] < 13) {

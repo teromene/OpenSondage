@@ -369,6 +369,16 @@ div.cadre td.ok {
 	font-size:12px;	
 	text-align:center;
 }
+div.cadre td.ok {
+	background-color: #9494CF;
+	font-size:12px;	
+	text-align:center;
+}
+div.cadre td.ok2 {
+	background-color: #C4C4FF; 
+	font-size:12px;	
+	text-align:center;
+}
 /*Case de tableau NON dans affichage de sondage*/
 div.cadre td.non {
 	background-color: #FFC475; 
@@ -415,6 +425,11 @@ div.cadre td.somme {
 	background-color: white; 
 	font-weight:  bold;
 	font-size:14px; 
+}
+
+div.cadre td.somme2 {
+	background-color: white; 
+	font-size:14px;
 }
 
 /*Case de tableau SUJET dans affichage de sondage*/
@@ -654,3 +669,26 @@ li.error {
 .imprimer {
     float:right;
 }
+
+input[type=radio]{
+    display:none;
+}
+.D2Label {
+
+    cursor:pointer;
+
+}
+.D2Label:hover {
+
+    cursor:pointer;
+    text-decoration:underline;
+
+}
+input[type=radio] + label:before {
+  text-decoration:none;
+}
+
+.D2Check:checked + .D2Label {
+  text-decoration:underline;
+}
+

@@ -47,7 +47,7 @@ if (file_exists('bandeaux_local.php')) {
 
 // On teste toutes les variables pour supprimer l'ensemble des warnings PHP
 // On transforme en entites html les données afin éviter les failles XSS
-$post_var = array('choix_sondage', 'poursuivre', 'titre', 'nom', 'adresse', 'commentaires', 'studsplus', 'mailsonde', 'creation_sondage_date', 'creation_sondage_date_x', 'creation_sondage_autre', 'creation_sondage_autre_x',);
+$post_var = array('choix_sondage', 'poursuivre', 'titre', 'nom', 'adresse', 'commentaires', 'studsplus', 'mailsonde', 'other', 'creation_sondage_date', 'creation_sondage_date_x', 'creation_sondage_autre', 'creation_sondage_autre_x',);
 foreach ($post_var as $var) {
   if (isset($_POST[$var]) === true) {
     $$var = htmlentities($_POST[$var], ENT_QUOTES, 'UTF-8');
@@ -58,7 +58,7 @@ foreach ($post_var as $var) {
 
 
 // On initialise egalement la session car sinon bonjour les warning :-)
-$session_var = array('choix_sondage', 'titre', 'nom', 'adresse', 'commentaires', 'mailsonde', 'studsplus', );
+$session_var = array('choix_sondage', 'titre', 'nom', 'adresse', 'commentaires', 'mailsonde', 'studsplus','other' );
 foreach ($session_var as $var) {
   if (issetAndNoEmpty($var, $_SESSION) === false) {
     $_SESSION[$var] = null;
@@ -72,6 +72,7 @@ $erreur_injection_nom = false;
 $erreur_injection_commentaires = false;
 $cocheplus = '';
 $cochemail = '';
+$cocheother = '';
 
 #tests
 if (issetAndNoEmpty("poursuivre")){
@@ -87,7 +88,12 @@ if (issetAndNoEmpty("poursuivre")){
   } else {
     $_SESSION["studsplus"] = '';
   }
-
+  unset($_SESSION["other"]);
+  if ($other !== null) {
+    $_SESSION["other"] = true;
+  } else {
+    $_SESSION["other"] = 'false';
+  }
   unset($_SESSION["mailsonde"]);
   if ($mailsonde !== null) {
     $_SESSION["mailsonde"] = true;
@@ -239,6 +245,13 @@ if ($_SESSION["studsplus"]=="+") {
 }
 
 echo '<input type=checkbox name=studsplus '.$cocheplus.' id="studsplus"><label for="studsplus">'. _(" Voters can modify their vote themselves.") .'</label><br>'."\n";
+
+if ($_SESSION["other"]) {
+  $cocheother="checked";
+}
+
+echo '<input type=checkbox name=other '.$cocheother.' id="other"><label for="other">'."Option « Seulement si nécessaire »".'</label><br>'."\n";
+
 
 if ($_SESSION["mailsonde"]) {
   $cochemail="checked";
